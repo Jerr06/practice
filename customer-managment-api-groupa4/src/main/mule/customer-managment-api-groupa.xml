@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:shopify="http://www.mulesoft.org/schema/mule/shopify"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/shopify http://www.mulesoft.org/schema/mule/shopify/current/mule-shopify.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd">
+	<flow name="customer-managment-api-groupaFlow" doc:id="674a3483-c9d4-4bf4-930e-24c9aedc184c" >
+		<http:listener doc:name="Listener" doc:id="bd661b33-a8f2-4e2b-98d7-a94773d9d4a7" config-ref="HTTP_Listener_config" path="/main"/>
+		<shopify:customer-list doc:name="Customer List" doc:id="f1fd2b0d-f4d5-43a5-8ead-b5a40f582f11" config-ref="Shopify_Connector_Config"/>
+		<ee:transform doc:name="filtering the unwanted data" doc:id="ba73cd90-364c-4db1-a39f-cd6c8a73f30c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map {
+    tags: $.tags,
+    TelephoneNumber: $.phone,
+    email: $.email,
+    fullName: $.addresses.name[0],
+    customerID: $.addresses.customer_id[0],
+    zipCode: $.addresses.zip[0]    
+    
+
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<foreach doc:name="For Each" doc:id="6fa56c29-4f5f-49f2-914e-3aae5a2626a1" >
+			<choice doc:name="Choice" doc:id="6ce28d43-280f-4137-b9a1-283de9c9064d" >
+				 <when expression='#[(payload.tags contains "Team_A") == true]'>
+					<set-variable value="#[payload]" doc:name="ALL TEAMA DATA" doc:id="289c6a91-396d-4854-a007-997b4b028ee6" variableName="teamA"/>
+					<logger level="INFO" doc:name="teama" doc:id="0bb3bb41-efb8-451e-82e5-b54e383dc9d7" message="#[payload]"/>
+					<flow-ref doc:name="refer to team a implimentation" doc:id="86cc4f1b-c8f4-40ce-8915-62bbbb28725e" name="implimentation-of-teamAFlow" />
+					<ee:transform doc:name="data maping" doc:id="5508f7e5-c04d-44b4-b235-77a2e3a33202">
+						<ee:message>
+							<ee:set-payload><![CDATA[
+%dw 2.0
+output application/json
+---
+//payload filter ((item, index) -> (item.tags== "Team_A") )
+{
+    "tags":vars.teamA.tags,
+    "TelephoneNumber": vars.teamA.TelephoneNumber,
+    "customerID": vars.teamA.customerID,
+    "id_hr": uuid(),
+    "zipCode":vars.teamA.zipCode,
+    "fullName": vars.teamA.fullName,
+    "email": vars.teamA.email,
+    "Latitude": vars.weather.coord.lat,
+    "Longitude":vars.weather.coord.lon,
+    "temp_min": vars.weather.main.temp_min,
+    "temp_max": vars.weather.main.temp_max,
+    "muleTimestamp": now() as String {format: "uuuu-MM-dd"}
+
+}]]></ee:set-payload>
+						</ee:message>
+					</ee:transform>
+					<logger level="INFO" doc:name="data to be inserted to db" doc:id="eb09d703-fd54-4a8a-a92e-986773e02eac" message="#[payload]"/>
+					<db:insert doc:name="database" doc:id="99878c74-31ba-4158-8f82-ba3be6b90e9d" config-ref="Database_Config" >
+						<db:sql ><![CDATA[insert into Craftsoft_B30_customer_team_A(tags,TelephoneNumber,customerID,id_hr,zipCode,fullName,email,Latitude,Longitude,temp_min,temp_max,muleTimestamp)
+values (:tags,:TelephoneNumber,:customerID,:id_hr,:zipCode,:fullName,:email,:Latitude,:Longitude,:temp_min,:temp_max,:muleTimestamp);]]></db:sql>
+						<db:input-parameters ><![CDATA[#[payload]]]></db:input-parameters>
+					</db:insert>
+				
+</when>
+				<otherwise>
+					<ee:transform doc:name="mapping error DB" doc:id="4387327b-f762-42d6-934a-ec65c7b8015a">
+						<ee:message>
+							<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+		
+    "tags":payload.tags,
+    "TelephoneNumber": payload.TelephoneNumber,
+    "customerID": payload.customerID,
+    "id_hr": uuid(),
+    "zipCode":payload.zipCode,
+    "fullName": payload.fullName,
+    "email": payload.email,
+    
+    "muleTimestamp": now() as String {format: "uuuu-MM-dd"},
+
+
+	}]]></ee:set-payload>
+						</ee:message>
+					</ee:transform>
+					<logger level="INFO" doc:name="in to error database flow1" doc:id="8cdaf3f0-3c8b-4215-b96b-be24aba52f5a" message="#[payload]"/>
+					<db:insert doc:name="errordatabase" doc:id="6006c50e-0534-4cd7-ac5e-1e5885aef0f8" config-ref="Database_Config">
+						<db:sql ><![CDATA[insert into Craftsoft_B30_customer_team_A_Error(tags,TelephoneNumber,customerID,id_hr,zipCode,fullName,email,muleTimestamp)
+values (:tags,:TelephoneNumber,:customerID,:id_hr,:zipCode,:fullName,:email,:muleTimestamp);]]></db:sql>
+						<db:input-parameters ><![CDATA[#[payload]]]></db:input-parameters>
+					</db:insert>
+
+				</otherwise>
+			
+</choice>
+		</foreach>
+		<flow-ref doc:name="flow refer to custumer display" doc:id="834422dd-7cef-4c06-bd99-8f344a583baf" name="get:\custumer_info:projectl2-config"/>
+		<error-handler ref="error_handlersError_Handler" >
+		
+			
+		</error-handler>
+	</flow>
+</mule>

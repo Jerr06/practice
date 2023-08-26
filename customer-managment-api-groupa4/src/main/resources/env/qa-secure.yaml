@@ -1,0 +1,27 @@
+http:
+ host: "![pHcvy51u7/w=]"
+ port: "![7lfNJW6/zOc=]"
+
+db:
+  host: "![7HRo53jChnPwi6RbyeSaCDJlkwN/hdI0]"
+  port: "![GsCqbJEvqpI=]"
+  user: "![d6z+2dAt/bCOJtWP/+h+qA==]"
+  password: "![ij5GaybNhpUTjtwBHl9x1XuDWn3TsPbVmrPdtvGzMhY=]"
+  database: "![d6z+2dAt/bAhbl6q+qzRYw==]"
+shophify:
+  username: "![CiUe0KAGo+QS2dti1ohRu2gUKZQ/RG5RzWVMSvLbudSF95Gxy5YYPw==]"
+  password: "![1jd+HLiIamH04MYs0WAg1nA+mPJaAyBGK2pgtROib7BJmzabx+v4hw==]"
+weather:
+  host: "![ohwAm3JpsF78yYwMwGTDTlV5fk0vVYqT]"
+  base path: "![rpXscuybphX+6Qn0wYkXRQ==]"
+  appid : "![9FDWCtsNSQQLX3WnCuYpsL7eqoJH3BwI608u11mFlUzCfj2NCrpymA==]"
+L1project:
+  host: "![Wr+Y9+k40dD/eRb0tTAWaCnxGz0hnUnM]"
+  port: "![FnQZO59bruU=]"
+  base path: "![WxymqPsUgRWQMlQaZ4810zZNQKLZuQHL]"
+  key: "![HjZ3wJZ2jTMlig4DAkZysnbrWVNP97q9]"
+numberverify:
+   host: "![oEmdfzZ6m3v4+76YFQnCPQ==]"
+   base path: "![Sx/7fRfpf7U=]"
+   access_key: "![mnXRipqg8moTW2Ydh3RT2piuUNZkJjLfxwvkhhXFoNojltf8xmwGZg==]"
+

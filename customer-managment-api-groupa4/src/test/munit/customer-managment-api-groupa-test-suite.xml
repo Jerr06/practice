@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="customer-managment-api-groupa-test-suite.xml" />
+	<munit:test name="customer-managment-api-groupa-test-suite-customer-managment-api-groupaFlowTest" doc:id="ac031cfc-4a4a-4613-b1db-ca86b754ea86" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="f88cef36-4b84-443f-8978-85020e0996c8" processor="foreach" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="For Each" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="6fa56c29-4f5f-49f2-914e-3aae5a2626a1" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return >
+					<munit-tools:payload value="#[payload]" />
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to customer-managment-api-groupaFlow" doc:id="7f5490f9-3948-464c-833c-f2d83d371568" name="customer-managment-api-groupaFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert expression" doc:id="274d05fe-bb54-42ab-a73b-71e8081297af" />
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

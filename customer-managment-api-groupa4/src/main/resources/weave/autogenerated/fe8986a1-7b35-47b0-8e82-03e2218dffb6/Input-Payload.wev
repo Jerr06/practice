@@ -1,0 +1,11 @@
+%dw 2.0
+
+type auto_fe8986a1_7b35_47b0_8e82_03e2218dffb6_Input_Payload = {|
+  tags: "" | "aaa, fdfd, www" | "5555, 77444", 
+  telephoNuber: Null | String, 
+  email: String, 
+  fullName: Null, 
+  customerID: Number, 
+  zipCode: String
+|}
+

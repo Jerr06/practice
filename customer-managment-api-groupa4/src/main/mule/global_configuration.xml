@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway" xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:shopify="http://www.mulesoft.org/schema/mule/shopify" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/shopify http://www.mulesoft.org/schema/mule/shopify/current/mule-shopify.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="01b6f63a-297e-41d5-847f-e32542d915de" >
+		<http:listener-connection host="${secure::http.host}" port="${secure::http.port}" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_numverify" doc:name="HTTP Request configuration" doc:id="96680c98-81ba-4b78-a053-2aabc6d8d964" basePath="${secure::numberverify.base path}">
+		<http:request-connection host="${secure::numberverify.host}" />
+	</http:request-config>
+	<http:request-config name="HTTP_Request_weather" doc:name="HTTP Request configuration" doc:id="470f5853-d2af-445e-9bca-c273d3142e04" basePath="${secure::weather.base path}">
+		<http:request-connection host="${secure::weather.host}" />
+	</http:request-config>
+	<http:request-config name="HTTP_Request_L1" doc:name="HTTP Request configuration" doc:id="1c46223c-cd73-4285-99a9-c6fd3371e94b" basePath="${secure::L1project.base path}">
+		<http:request-connection protocol="HTTPS" host="${secure::L1project.host}" port="${secure::L1project.port}" />
+	</http:request-config>
+	<shopify:config name="Shopify_Connector_Config" doc:name="Shopify Connector Config" doc:id="d52beb3d-5c54-4630-b368-bea172c53bdd" >
+		<shopify:basic-auth-connection username="${secure::shophify.username}" password="${secure::shophify.password}" baseUri="https://mule-l2-final-project.myshopify.com/" />
+	</shopify:config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="6af368c8-2da6-47e8-8efa-c59548bbfbdb" >
+		<db:my-sql-connection host="${secure::db.host}" port="${secure::db.port}" user="${secure::db.user}" password="${secure::db.password}" database="${secure::db.database}" />
+	</db:config>
+	<configuration-properties doc:name="Configuration properties" doc:id="1d99b53c-a1b2-4e00-9d2e-83701b2cb58a" file="env\qa-secure.yaml" />
+	<global-property doc:name="Global Property" doc:id="163cd05d-8027-4fcd-a586-648d51781cff" name="env" value="${env}.yaml" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="5d58b8c9-6693-4ac4-811d-2108d4ba422d" file="env\qa-secure.yaml" key="${secure.key}" >
+		<secure-properties:encrypt algorithm="Blowfish" />
+	</secure-properties:config>
+	<api-gateway:autodiscovery apiId="18910746" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="2148cfdc-74b1-438d-adff-41d90ce5c490" flowRef="customer-managment-api-groupaFlow" />
+</mule>

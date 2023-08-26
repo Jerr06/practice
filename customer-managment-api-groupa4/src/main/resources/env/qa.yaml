@@ -1,0 +1,27 @@
+http:
+ host: "0.0.0.0"
+ port: "8081"
+
+db:
+  host: "db.icraftsoft.net"
+  port: "3306"
+  user: "craft_trainer"
+  password: "Cr@fTTraNinGp@ssw0Rd2023"
+  database: "craft_training"
+shophify:
+  username: "fcdbdd9ae6ab70463ab5d219ef48265d"
+  password: "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"
+weather:
+  host: "api.openweathermap.org"
+  base path: "/data/2.5"
+  appid : "f2c5d4707693f74beb910ee086941bc7"
+L1project:
+  host: "api.zip-codes.com"
+  port: "443"
+  base path: "/ZipCodesAPI.svc/1.0"
+  key: "OCYO9FMA5ZH75XX3VQNU"
+numberverify:
+   host: "apilayer.net"
+   base path: "/api"
+   access_key: "c755aa7ee520b25b7c285ac89d224f1b"
+   

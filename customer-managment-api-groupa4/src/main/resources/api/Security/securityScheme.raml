@@ -1,0 +1,21 @@
+#%RAML 1.0 SecurityScheme
+type: Basic Authentication
+description: securing the api
+describedBy:
+  headers:
+    Authorization: 
+     description: "user require to send user name and password"
+     type: string
+  responses:
+    401:
+      body:
+        application/json:
+          example:
+            {"bad or unknown user name"}
+    403:
+      body:
+        application/json:
+          example:
+            {"forbidden"}
+
+          

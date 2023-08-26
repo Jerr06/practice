@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="implimentation-of-teamA-test-suite.xml" />
+	<munit:test name="implimentation-of-teamA-test-suite-implimentation-of-teamAFlowTest" doc:id="5dbe4070-6436-4c04-9e59-2b2661711d5b" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="5ea94d25-9c78-4fb1-b8bb-1921045648d5" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="NUMBER VERIFY" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="70f462e7-ebd0-4a4f-b022-fff1d9f61cef" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="HTTP_Request_numverify" attributeName="config-ref" />
+					<munit-tools:with-attribute whereValue="/validate" attributeName="path" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:assert doc:name="Assert expression" doc:id="b6509145-7865-4ab2-8f4f-86368ba1d56a" />
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to implimentation-of-teamAFlow" doc:id="380f320e-6984-4b3e-8f55-1171ce1e34f9" name="implimentation-of-teamAFlow"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert expression1" doc:id="5e910078-b2b1-4835-89b6-8e3e374a2f64" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="implimentation-of-teamA-test-suite-weatherandl1implimentationTest" doc:id="be86c0a4-0be6-4f38-be14-5f604afb054f" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="0b3c1942-6855-4142-9d8f-e5dac3f7bdd3" processor="flow" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="weatherandl1implimentation" attributeName="name" />
+					<munit-tools:with-attribute whereValue="ba481ca5-83bb-4282-baac-222720ae649f" attributeName="doc:id" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:assert doc:name="Assert expression" doc:id="4ea2b7da-c122-4c11-aa95-b457263fff4d" />
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to weatherandl1implimentation" doc:id="38ed7ff2-7c8d-4f75-b6e5-fbf28735342f" name="weatherandl1implimentation"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert expression1" doc:id="2a999b58-7c36-4bf5-9e08-078ab7669bd4" />
+		</munit:validation>
+	</munit:test>
+	<munit:test name="implimentation-of-teamA-test-suite-weatherandl1implimentationTest1" doc:id="09e92b31-a86c-4b9f-9429-85a1e78ae4ab" description="Test" ignore="true">
+		<munit:behavior >
+			<munit-tools:mock-when doc:name="Mock when" doc:id="41f52e91-112a-4da9-a752-9b2f0bbf9b4a" processor="http:request" >
+				<munit-tools:with-attributes >
+					<munit-tools:with-attribute whereValue="GET" attributeName="method" />
+					<munit-tools:with-attribute whereValue="L1PROJECT" attributeName="doc:name" />
+					<munit-tools:with-attribute whereValue="1bc3f34b-bb38-4db9-9e5b-8c724f60d551" attributeName="doc:id" />
+					<munit-tools:with-attribute whereValue="HTTP_Request_L1" attributeName="config-ref" />
+					<munit-tools:with-attribute whereValue="GetZipCodeDetails/{zipcode}" attributeName="path" />
+				</munit-tools:with-attributes>
+			</munit-tools:mock-when>
+			<munit-tools:assert doc:name="Assert expression" doc:id="78f32a4e-1dd4-4291-ae82-98dfb57262bd" />
+		</munit:behavior>
+		<munit:execution >
+			<flow-ref doc:name="Flow-ref to weatherandl1implimentation" doc:id="53cc1b20-71e4-4fd8-8224-7b67f4af57b8" name="weatherandl1implimentation"/>
+		</munit:execution>
+		<munit:validation >
+			<munit-tools:assert doc:name="Assert expression" doc:id="90c830f9-b679-42e7-a291-d295de7a2d72" />
+		</munit:validation>
+	</munit:test>
+
+
+</mule>

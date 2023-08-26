@@ -1,0 +1,26 @@
+#%RAML 1.0
+title: customer-management-service
+baseUri: http://api.customerManagementService.com/sapi
+
+traits:
+  errors: !include Traits/trait.raml
+types:
+  types: !includedataType/
+securitySchemes:
+  secure: !include Security/securityScheme.raml 
+
+/custumer_info:
+
+  securedBy:
+    - secure
+  description: list data from zipcode
+  get:
+    responses:
+      "200":
+        body:
+          application/json:
+            example: !include Examples/zipcode.raml
+  is:
+    - errors
+
+  
