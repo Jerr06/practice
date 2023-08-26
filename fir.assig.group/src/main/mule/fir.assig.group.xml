@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="399c22e0-eb65-44e2-906d-e002a56ec8b0" >
+		<http:listener-connection host="localhost" port="8081" />
+	</http:listener-config>
+	<file:config name="File_Config" doc:name="File Config" doc:id="fb5c37b9-bb2a-4cc8-8498-10efcf69e41d" >
+		<file:connection workingDir="C:\Users\19714\Desktop\file\input" />
+	</file:config>
+	<flow name="fir.assig.groupFlow" doc:id="c4fba8be-39a0-425e-9779-740e6681ebd2" >
+		<http:listener doc:name="Listener" doc:id="13de59b3-402f-4832-9a60-670e81ec0f84" config-ref="HTTP_Listener_config" path="/qparam"/>
+		<flow-ref doc:name="Flow Reference" doc:id="6dadff16-8387-4dac-9d0c-88c250cc3d50" name="fir.assig.groupFlow1" targetValue="#[attributes.queryParams]"/>
+	</flow>
+	<flow name="fir.assig.groupFlow1" doc:id="2f42f0e5-9645-4896-98d5-d2937e83b776" >
+		<ee:transform doc:name="Transform Message" doc:id="f51fad0e-345d-4762-8ea8-af18682c3619" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	size:sizeOf(attributes.queryParams.lastname),
+	firstname:sizeOf(attributes.queryParams.firstname)
+	
+}]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+			</ee:variables>
+		</ee:transform>
+	</flow>
+	<flow name="fir.assig.groupFlow2" doc:id="bcb5b220-8eb7-41c0-97c4-4ed3f96e4648" >
+		<http:listener doc:name="Listener" doc:id="23feef22-92e8-49fc-b262-9691412ac4ad" config-ref="HTTP_Listener_config" path="/choice"/>
+		<choice doc:name="Choice" doc:id="1906a8fe-6eba-46bb-bbb7-92dc12d8722f" >
+			<when expression='#[attributes.method== "GET"]'>
+				<file:write doc:name="Write for get" doc:id="a76175d8-b875-4501-a9fc-c308aa9e35fa" config-ref="File_Config" path="C:\Users\19714\Desktop\file\input\GET.txt">
+					<file:content ><![CDATA[#["You are invoked with Get Method"]]]></file:content>
+				</file:write>
+			</when>
+			<when expression='#[attributes.method=="POST"]'>
+				<file:write doc:name="Write" doc:id="aa031b29-d882-4fd2-9fa4-73b226d3d4ad" config-ref="File_Config" path="C:\Users\19714\Desktop\file\input\POST.txt" mode="CREATE_NEW">
+					<file:content><![CDATA[You are invoked with Post Method]]></file:content>
+				</file:write>
+			</when>
+			<when expression='#[attributes.method=="PUT"]'>
+				<file:write doc:name="Write" doc:id="25db2295-6c41-404e-a3a5-2f1ff11aa501" config-ref="File_Config" path="C:\Users\19714\Desktop\file\input\PUT.txt" mode="CREATE_NEW">
+					<file:content ><![CDATA[You are invoked with Put Method]]></file:content>
+				</file:write>
+			</when>
+			<otherwise>
+				<set-payload value='#[%dw 2.0&#10;output application/json&#10;---&#10;{"msg" :"defaultmsg"}]' doc:name="Set Payload" doc:id="6528c0fd-d9c3-4976-a894-4be8bcd60c74" />
+			</otherwise>
+		</choice>
+		<ee:transform doc:name="Transform Message" doc:id="04aa6af4-2961-4a13-92df-26c717f1103c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+ "the out put is:" ++ attributes.method ]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

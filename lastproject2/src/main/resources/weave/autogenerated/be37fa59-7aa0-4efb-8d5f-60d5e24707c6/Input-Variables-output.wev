@@ -1,4 +1,0 @@
-%dw 2.0
-
-type auto_be37fa59_7aa0_4efb_8d5f_60d5e24707c6_Input_Variables_output = Array<{|  tags*: String,   first_name: String,   last_name: String,   phone: String,   customer_id: Number,   zip: String,   email: String|}>
-
